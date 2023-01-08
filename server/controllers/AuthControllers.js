@@ -70,5 +70,5 @@ module.exports.login = async (req, res, next) => {
     console.log(err);
     const errors = handleErrors(err);
     res.json({ errors, created: false });
-  }
+  } 
 };

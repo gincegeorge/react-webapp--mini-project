@@ -14,7 +14,7 @@ function Login() {
   const generateError = (err) => {
     toast.error(err, {
       position: "bottom-right",
-    });
+    }); 
   };
 
   const handleSubmit = async (e) => {
