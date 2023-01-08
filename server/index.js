@@ -1,10 +1,16 @@
 const express = require("express");
+const morgan = require("morgan");
 const cors = require("cors");
 const mongoose = require("mongoose");
+const cookieParser = require("cookie-parser");
+const authRoutes = require("./routes/AuthRoutes");
+
 const app = express();
 
+app.use(morgan("connect"));
+
 app.listen(4000, () => {
-  console.log("server running on port 4000");
+  console.log("listening on http://localhost:4000");
 });
 
 mongoose
@@ -13,7 +19,7 @@ mongoose
     useUnifiedTopology: true,
   })
   .then(() => {
-    console.log("DB connection success");
+    console.log("DB Connetion Successfull");
   })
   .catch((err) => {
     console.log(err.message);
@@ -22,9 +28,11 @@ mongoose
 app.use(
   cors({
     origin: ["http://localhost:3000"],
-    method: ["GET", "POST"],
+    methods: ["GET", "POST"],
     credentials: true,
   })
 );
 
+app.use(cookieParser());
 app.use(express.json());
+app.use("/", authRoutes);
