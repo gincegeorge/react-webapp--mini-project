@@ -18,7 +18,7 @@ body {
   justify-content: center;
   align-items: center;
   background-color: rgb(236, 236, 238);
-  overflow: hidden;
+  overflow-x: hidden;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 

@@ -5,12 +5,54 @@ import { useNavigate } from "react-router-dom";
 import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
 import { BACKEND_URL } from "../../config/config.js";
-import Navbar from "../../components/Navbar"
+import Navbar from "../../components/Navbar";
 
 function Users() {
   const navigate = useNavigate();
 
   const [userList, setUserList] = useState();
+  const [render, setrender] = useState(0);
+
+  //EDIT USER
+  const editUser = (userId) => {
+    navigate("/admin/users/edit/" + userId);
+  };
+
+  //DELETE USER
+  const deleteUser = (userId) => {
+    confirmAlert({
+      title: "Confirm to delete",
+      message: "Are you sure to do this.",
+      buttons: [
+        {
+          label: "Yes",
+          onClick: () => {
+            deleteUserBackend(userId);
+          },
+        },
+        {
+          label: "No",
+          onClick: () => console.log("Don't delete"),
+        },
+      ],
+    });
+  };
+
+  const deleteUserBackend = async (userId) => {
+    try {
+      const result = await axios.post(
+        "http://localhost:4000/admin/users/delete/" + userId,
+        {
+          withCredentials: true,
+        }
+      );
+      if (result.status) {
+        setrender(++render);
+      }
+    } catch (error) {
+      //  console.log(error);
+    }
+  };
 
   //GET USER DATA
   useEffect(() => {
@@ -21,17 +63,12 @@ function Users() {
       setUserList(data);
     };
     getData();
-  }, [0]);
-
-  //EDIT USER
-  const editUser = (userId) => {
-    navigate("/admin/users/edit/" + userId);
-  };
+  }, [render]);
 
   return (
     <>
       <div className="private">
-        <Navbar/>
+        <Navbar />
         <div className="flex flex-col">
           <div className="overflow-x-auto">
             <div className="p-1.5 w-full inline-block align-middle">
@@ -111,7 +148,11 @@ function Users() {
                                 </div>
                               </td>
                               <td className="px-6 py-4 text-sm font-medium text-right whitespace-nowrap">
-                                <div className="text-red-500 hover:text-red-700">
+                                <div
+                                  className="text-red-500 hover:text-red-700"
+                                  id={user._id}
+                                  onClick={() => deleteUser(user._id)}
+                                >
                                   Delete
                                 </div>
                               </td>
