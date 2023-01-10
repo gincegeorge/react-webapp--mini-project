@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { ToastContainer, toast,  } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import axios from "axios";
 
-function Login() {
+function Register() {
   const navigate = useNavigate();
   const [values, setvalues] = useState({
     name: "",
@@ -14,7 +14,7 @@ function Login() {
   const generateError = (err) => {
     toast.error(err, {
       position: "bottom-right",
-    }); 
+    });
   };
 
   const handleSubmit = async (e) => {
@@ -22,7 +22,7 @@ function Login() {
 
     try {
       const { data } = await axios.post(
-        "http://localhost:4000/login",
+        "http://localhost:4000/register",
         {
           ...values,
         },
@@ -43,10 +43,22 @@ function Login() {
       console.log(error);
     }
   };
+
   return (
     <div className="container">
-      <h2>Login</h2>
+      <h2>Register account</h2>
       <form onSubmit={handleSubmit}>
+        <div>
+          <label htmlFor="name">Name</label>
+          <input
+            type="text"
+            placeholder="Name"
+            name="name"
+            onChange={(e) =>
+              setvalues({ ...values, [e.target.name]: e.target.value })
+            }
+          />
+        </div>
         <div>
           <label htmlFor="email">Email</label>
           <input
@@ -70,10 +82,10 @@ function Login() {
           />
         </div>
         <div>
-          <button type="submit">Login</button>
+          <button type="submit">submit</button>
         </div>
         <div>
-          Don't have an account? <Link to="/register">Register</Link>
+          Already have an account? <Link to="/login">Login</Link>
         </div>
       </form>
       <ToastContainer />
@@ -81,4 +93,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default Register;

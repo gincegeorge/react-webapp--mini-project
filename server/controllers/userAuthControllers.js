@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken");
 
 const maxAge = 3 * 24 * 60 * 60;
 
+//CREATE JWT TOKEN
 const createToken = (id) => {
   return jwt.sign({ id }, "this is the secret key", {
     expiresIn: maxAge,
@@ -31,7 +32,7 @@ const handleErrors = (err) => {
   return errors;
 };
 
-//REGISTER
+//REGISTER USER
 module.exports.register = async (req, res, next) => {
   try {
     const { name, email, password } = req.body;
@@ -52,7 +53,7 @@ module.exports.register = async (req, res, next) => {
   }
 };
 
-//LOGIN
+//LOGIN USER
 module.exports.login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
@@ -70,5 +71,5 @@ module.exports.login = async (req, res, next) => {
     console.log(err);
     const errors = handleErrors(err);
     res.json({ errors, created: false });
-  } 
+  }
 };

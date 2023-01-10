@@ -7,7 +7,7 @@ const authRoutes = require("./routes/AuthRoutes");
 
 const app = express();
 
-app.use(morgan("connect"));
+app.use(morgan('tiny'));
 
 app.listen(4000, () => {
   console.log("listening on http://localhost:4000");

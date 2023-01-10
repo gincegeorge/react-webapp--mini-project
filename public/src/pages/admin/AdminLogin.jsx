@@ -1,12 +1,11 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer, toast,  } from "react-toastify";
 import axios from "axios";
 
-function Register() {
+function Login() {
   const navigate = useNavigate();
   const [values, setvalues] = useState({
-    name: "",
     email: "",
     password: "",
   });
@@ -14,7 +13,7 @@ function Register() {
   const generateError = (err) => {
     toast.error(err, {
       position: "bottom-right",
-    });
+    }); 
   };
 
   const handleSubmit = async (e) => {
@@ -22,7 +21,7 @@ function Register() {
 
     try {
       const { data } = await axios.post(
-        "http://localhost:4000/login",
+        "http://localhost:4000/admin/login",
         {
           ...values,
         },
@@ -32,34 +31,21 @@ function Register() {
       );
       if (data) {
         if (data.errors) {
-          const { name, email, password } = data.errors;
-          if (name) generateError(name);
-          else if (email) generateError(email);
+          const { email, password } = data.errors;
+          if (email) generateError(email);
           else if (password) generateError(password);
         } else {
-          navigate("/");
+          navigate("/admin");
         }
       }
     } catch (error) {
       console.log(error);
     }
   };
-
   return (
-    <div className="container">
-      <h2>Register account</h2>
+    <div className="container admin">
+      <h2>Admin Login</h2>
       <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="name">Name</label>
-          <input
-            type="text"
-            placeholder="Name"
-            name="name"
-            onChange={(e) =>
-              setvalues({ ...values, [e.target.name]: e.target.value })
-            }
-          />
-        </div>
         <div>
           <label htmlFor="email">Email</label>
           <input
@@ -83,10 +69,7 @@ function Register() {
           />
         </div>
         <div>
-          <button type="submit">submit</button>
-        </div>
-        <div>
-          Already have an account? <Link to="/login">Login</Link>
+          <button type="submit">Login</button>
         </div>
       </form>
       <ToastContainer />
@@ -94,4 +77,4 @@ function Register() {
   );
 }
 
-export default Register;
+export default Login;
